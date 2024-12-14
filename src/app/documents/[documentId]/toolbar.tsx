@@ -30,6 +30,8 @@ import {
   ImageIcon,
   ItalicIcon,
   Link2Icon,
+  ListIcon,
+  ListOrderedIcon,
   ListTodoIcon,
   LucideIcon,
   MessageSquarePlusIcon,
@@ -340,20 +342,20 @@ const AlignButton = () => {
       icon: AlignLeftIcon,
     },
     {
-      label:"Align Center",
+      label: "Align Center",
       value: "center",
       icon: AlignCenterIcon,
     },
     {
-      label:"Align Right",
+      label: "Align Right",
       value: "right",
       icon: AlignRightIcon,
     },
     {
-      label:"Justify",
+      label: "Justify",
       value: "justify",
       icon: AlignJustifyIcon,
-    }
+    },
   ];
   return (
     <DropdownMenu>
@@ -373,6 +375,54 @@ const AlignButton = () => {
               className={cn(
                 "flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200/80 ",
                 editor?.isActive({ textAlign: value }) && "bg-neutral-200/80"
+              )}
+            >
+              <Icon className="size-4" />
+              <span className="text-sm">{label}</span>
+            </button>
+          );
+        })}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+const ListButton = () => {
+  const { editor } = useEditorStore();
+  const list = [
+    {
+      label: "BUllet List",
+      icon: ListIcon,
+      onClick: () => {
+        editor?.chain().focus().toggleBulletList().run();
+      },
+      isActive: () => editor?.isActive("bulletList"),
+    },
+    {
+      label:"Ordered List",
+      icon: ListOrderedIcon,
+      onClick: () => {
+        editor?.chain().focus().toggleOrderedList().run();
+      },
+      isActive: () => editor?.isActive("orderedList"),
+    },
+  ];
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className="h-7 min-w-7 shrink-0 flex items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
+          <ListIcon className="size-4" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-1 flex flex-col gap-y-1">
+        {list.map(({ label, onClick, isActive, icon: Icon }) => {
+          return (
+            <button
+              key={label}
+              onClick={onClick}
+              className={cn(
+                "flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200/80 ",
+                isActive() && "bg-neutral-200/80"
               )}
             >
               <Icon className="size-4" />
@@ -481,9 +531,9 @@ const Toolbar = () => {
       <LinkButton />
       <ImageButton />
       <Separator orientation="vertical" className="h-6 bg-neutral-300" />
-      <AlignButton/>
+      <AlignButton />
       {/* TODO: Line height */}
-      {/* TODO: List */}
+      <ListButton/>
       {sections[2].map((item) => (
         <ToolbarButton {...item} key={item.label} />
       ))}
