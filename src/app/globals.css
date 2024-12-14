@@ -189,8 +189,8 @@ body {
 
     td,
     th {
-      border: 1px solid var(--gray-3);
-      /* border: 1px solid black; */
+      /* border: 1px solid var(--gray-3); */
+      border: 1px solid black;
       box-sizing: border-box;
       min-width: 1em;
       padding: 6px 8px;
@@ -203,15 +203,15 @@ body {
     }
 
     th {
-      background-color: var(--gray-1);
-      /* background-color: #c7c7c7; */
+      /* background-color: var(--gray-1); */
+      background-color: #c7c7c7;
       font-weight: bold;
       text-align: left;
     }
 
     .selectedCell:after {
-      background: var(--gray-2);
-      /* background: #959596; */
+      /* background: var(--gray-2); */
+      background: #959596;
       content: "";
       left: 0; right: 0; top: 0; bottom: 0;
       pointer-events: none;
