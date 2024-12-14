@@ -23,6 +23,7 @@ import {
   UnderlineIcon,
   Undo2Icon,
 } from "lucide-react";
+import { type ColorResult, CirclePicker, SketchPicker } from "react-color";
 
 interface ToolbarButtonProps {
   icon: LucideIcon;
@@ -159,6 +160,31 @@ const HeadingLevelButton = () => {
   );
 };
 
+const TextColorButton = () => {
+  const { editor } = useEditorStore();
+  const value = editor?.getAttributes("textStyle").color || "#000000";
+  const onChange = (color: ColorResult) => {
+    editor?.chain().focus().setColor(color.hex).run();
+  };
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className="h-7 min-w-7 shrink-0 flex items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
+          <span className="text-xs">A</span>
+          <div
+            className="h-0 5 w-full"
+            style={{ backgroundColor: value }}
+          ></div>
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-0">
+        {/* <CirclePicker onChange={onChange} color={value} colors=["#000000","#ffffff"] /> */}
+        <SketchPicker onChange={onChange} color={value} />
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
 interface Section extends ToolbarButtonProps {
   label: string;
 }
@@ -249,8 +275,8 @@ const Toolbar = () => {
       {sections[1].map((item) => (
         <ToolbarButton {...item} key={item.label} />
       ))}
-      {/* TODO: Text color */}
       <Separator orientation="vertical" className="h-6 bg-neutral-300" />
+      <TextColorButton />
       {/* TODO: Highlight color */}
       <Separator orientation="vertical" className="h-6 bg-neutral-300" />
       {/* TODO: Link */}

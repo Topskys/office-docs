@@ -15,6 +15,8 @@ import Underline from "@tiptap/extension-underline";
 import FontFamily from '@tiptap/extension-font-family'
 import Text from '@tiptap/extension-text'
 import TextStyle from '@tiptap/extension-text-style'
+import { Color } from '@tiptap/extension-color'
+import Highlight from '@tiptap/extension-highlight'
 import { useEditorStore } from "@/store/use-editor-store";
 
 const Editor = () => {
@@ -72,6 +74,10 @@ const Editor = () => {
       FontFamily,
       Text,
       TextStyle,
+      Color,
+      Highlight.configure({
+        multicolor: true,
+      })
     ],
     content: `
         <h1>This is a 1st level heading</h1>
