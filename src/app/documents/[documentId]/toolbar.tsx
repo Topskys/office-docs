@@ -1,10 +1,12 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { useEditorStore } from "@/store/use-editor-store";
@@ -12,7 +14,9 @@ import { Level } from "@tiptap/extension-heading";
 import {
   BoldIcon,
   ChevronDownIcon,
+  HighlighterIcon,
   ItalicIcon,
+  Link2Icon,
   ListTodoIcon,
   LucideIcon,
   MessageSquarePlusIcon,
@@ -23,6 +27,7 @@ import {
   UnderlineIcon,
   Undo2Icon,
 } from "lucide-react";
+import { useState } from "react";
 import { type ColorResult, CirclePicker, SketchPicker } from "react-color";
 
 interface ToolbarButtonProps {
@@ -185,6 +190,56 @@ const TextColorButton = () => {
   );
 };
 
+const HighlightColorButton = () => {
+  const { editor } = useEditorStore();
+  const value = editor?.getAttributes("highlight").color || "#ffffff";
+  const onChange = (color: ColorResult) => {
+    editor?.chain().focus().setHighlight({ color: color.hex }).run();
+  };
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className="h-7 min-w-7 shrink-0 flex items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
+          <HighlighterIcon className="size-4" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-0">
+        <SketchPicker onChange={onChange} color={value} />
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+const LinkButton = () => {
+  const { editor } = useEditorStore();
+  const href = editor?.getAttributes("link").href || "";
+  const [value, setValue] = useState(href);
+  const onChange = (href: string) => {
+    editor?.chain().focus().extendMarkRange("link").setLink({ href }).run();
+    setValue("");
+  };
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        asChild
+        onClick={() => setValue(editor?.getAttributes("link").href)}
+      >
+        <button className="h-7 min-w-7 shrink-0 flex items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
+          <Link2Icon className="size-4" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-2.5 flex items-center gap-x-2">
+        <Input
+          placeholder="Https://example.com"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+        <Button onClick={() => onChange(value)}>Apply</Button>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
 interface Section extends ToolbarButtonProps {
   label: string;
 }
@@ -275,11 +330,10 @@ const Toolbar = () => {
       {sections[1].map((item) => (
         <ToolbarButton {...item} key={item.label} />
       ))}
-      <Separator orientation="vertical" className="h-6 bg-neutral-300" />
       <TextColorButton />
-      {/* TODO: Highlight color */}
+      <HighlightColorButton />
       <Separator orientation="vertical" className="h-6 bg-neutral-300" />
-      {/* TODO: Link */}
+      <LinkButton />
       <Separator orientation="vertical" className="h-6 bg-neutral-300" />
       {/* TODO: Image */}
       <Separator orientation="vertical" className="h-6 bg-neutral-300" />
