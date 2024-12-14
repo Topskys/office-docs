@@ -11,8 +11,7 @@ const DocumentIdPage = async ({ params }: Props) => {
   // const { documentId } = React.use(params); // use client
   return (
     <div>
-      <h1>DocumentId: {documentId}</h1>
-      <p>This is the documentId page.</p>
+      
       <Editor></Editor>
     </div>
   );
