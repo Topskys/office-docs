@@ -12,13 +12,14 @@ import TableRow from "@tiptap/extension-table-row";
 import Image from "@tiptap/extension-image";
 import ImageResize from "tiptap-extension-resize-image";
 import Underline from "@tiptap/extension-underline";
-import FontFamily from '@tiptap/extension-font-family'
-import Text from '@tiptap/extension-text'
-import TextStyle from '@tiptap/extension-text-style'
-import { Color } from '@tiptap/extension-color'
-import Highlight from '@tiptap/extension-highlight'
-import Link from '@tiptap/extension-link'
-import TextAlign from '@tiptap/extension-text-align'
+import FontFamily from "@tiptap/extension-font-family";
+import Text from "@tiptap/extension-text";
+import TextStyle from "@tiptap/extension-text-style";
+import { Color } from "@tiptap/extension-color";
+import Highlight from "@tiptap/extension-highlight";
+import Link from "@tiptap/extension-link";
+import TextAlign from "@tiptap/extension-text-align";
+import { FontSizeExtension } from "@/extensions/font-size";
 import { useEditorStore } from "@/store/use-editor-store";
 
 const Editor = () => {
@@ -44,7 +45,7 @@ const Editor = () => {
     },
     onContentError({ editor }) {
       setEditor(editor);
-    }, 
+    },
     onDestroy() {
       setEditor(null);
     },
@@ -83,11 +84,12 @@ const Editor = () => {
       Link.configure({
         openOnClick: false,
         autolink: true,
-        defaultProtocol:"https"
+        defaultProtocol: "https",
       }),
       TextAlign.configure({
-        types: ['heading', 'paragraph'],
-      })
+        types: ["heading", "paragraph"],
+      }),
+      FontSizeExtension,
     ],
     content: `
         <h1>This is a 1st level heading</h1>
