@@ -12,6 +12,7 @@ import { useMutation } from "convex/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { api } from "../../../convex/_generated/api";
+import { toast } from "sonner";
 
 export const TemplateGallery = () => {
   const router = useRouter();
@@ -25,8 +26,10 @@ export const TemplateGallery = () => {
       initialContent,
     })
       .then((documentId) => {
+        toast.success("Document created")
         router.push(`/documents/${documentId}`);
       })
+      .catch(() => toast.error("Failed to create document"))
       .finally(() => {
         setIsCreating(false);
       });
@@ -59,6 +62,7 @@ export const TemplateGallery = () => {
                     <button
                       disabled={isCreating}
                       onClick={() => onTemplateClick(template.label, "")}
+                      // TODO: Add proper initial content
                       style={{
                         backgroundImage: `url(${template.imageUrl})`,
                         backgroundSize: "cover",
