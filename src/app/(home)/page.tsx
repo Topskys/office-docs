@@ -1,5 +1,5 @@
 "use client";
-import { usePaginatedQuery, useQuery } from "convex/react";
+import { usePaginatedQuery} from "convex/react";
 import { Navbar } from "./navbar";
 import { TemplateGallery } from "./template-gallery";
 import { api } from "../../../convex/_generated/api";
@@ -14,7 +14,7 @@ const Home = () => {
     { initialNumItems: 5 }
   );
 
-  if (results === undefined) {
+  if (isLoading || results === undefined) {
     return <div>Loading...</div>;
   }
 

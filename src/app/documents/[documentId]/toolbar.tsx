@@ -450,7 +450,7 @@ const FontSizeButton = () => {
   const updateFontSize = (newSize: string) => {
     const size = parseInt(newSize);
     if (!isNaN(size) && size > 0) {
-      editor?.chain().focus().setFontSize(`${size}px`).run();
+      // editor?.chain().focus().setFontSize(size.toString()).run();
       setFontSize(newSize);
       setInputValue(newSize);
       setIsEditing(false);
@@ -571,7 +571,7 @@ const LineHeightButton = () => {
             <button
               key={value}
               onClick={() => {
-                editor?.chain().focus().setLineHeight(value).run();
+                // editor?.chain().focus().setLineHeight(value).run();
               }}
               className={cn(
                 "flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200/80 ",
@@ -620,7 +620,7 @@ const Toolbar = () => {
           const current = editor?.view.dom.toggleAttribute("spellcheck");
           editor?.view.dom.setAttribute(
             "spellcheck",
-            current === "false" ? "true" : "false"
+            current === false ? "true" : "false"
           );
         },
       },
@@ -647,8 +647,8 @@ const Toolbar = () => {
       {
         label: "Comment",
         icon: MessageSquarePlusIcon,
-        onClick: () => {},
-        isActive: false,
+        onClick: () => editor?.chain().focus().addPendingComment().run(),
+        isActive: editor?.isActive("liveblocksCommentMark"),
       },
       {
         label: "List Todo",
@@ -664,7 +664,7 @@ const Toolbar = () => {
     ],
   ];
   return (
-    <div className="bg-[#f1f4f9] px-2.5 py-0.5 rounded-[24px] min-h-[40px] flex items-center gap-x-0.5 overflow-x-auto">
+    <div className="bg-[#f1f4f9] px-2.5 py-0.5 min-h-[40px] flex items-center gap-x-0.5 overflow-x-auto">
       {sections[0].map((item) => (
         <ToolbarButton {...item} key={item.label} />
       ))}
